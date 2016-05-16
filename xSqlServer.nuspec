@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>xSqlServer</id>
+		<version>1.0.0</version>
+		<authors>devops2@cardlytics.com</authors>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>temp xSqlServer nuspec</description>
+		<releaseNotes></releaseNotes>
+		<copyright>Copyright 2016</copyright>
+	</metadata>
+	<files>
+		<file src="**" target="xSQLServer" />
+	</files>
+</package>
