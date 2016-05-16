@@ -45,7 +45,9 @@ function Connect-SQL
     {
         $SQL = New-Object Microsoft.SqlServer.Management.Smo.Server $ConnectSQL
     }
-    if($SQL)
+    # check for version because we can populate the SQL object and still 
+    # not have login rights to access any of our SMO properties
+    if($SQL -and ($SQL.version -ne $null) )
     {
         New-VerboseMessage -Message "Connected to SQL $ConnectSQL"
         $SQL
