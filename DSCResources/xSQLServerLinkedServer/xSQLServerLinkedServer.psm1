@@ -104,7 +104,7 @@ Function Set-TargetResource
         $RemoteServerFullname = $RemoteServer
    }
 
-   if( $linkedServers.Contains("$LinkedServerName") )
+   if( $SQL.linkedServers.Contains("$LinkedServerName") )
    {
         if($ensure)
         {
