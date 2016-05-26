@@ -54,7 +54,7 @@ function Connect-SQL
     }
     else
     {
-        Throw -Message "Failed connecting to SQL $ConnectSQL"
+        Throw "Failed connecting to SQL $ConnectSQL"
         Exit
     }
 }
