@@ -29,7 +29,7 @@ Function Get-TargetResource
         [System.String]
         $RemoteInstance,
 
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true)]
         [System.String]
         $LinkedServerName,
 
@@ -73,7 +73,7 @@ Function Set-TargetResource
         [System.String]
         $RemoteInstance,
 
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true)]
         [System.String]
         $LinkedServerName,
 
@@ -161,7 +161,7 @@ Function Test-TargetResource
         [System.String]
         $RemoteInstance,
 
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true)]
         [System.String]
         $LinkedServerName,
 
