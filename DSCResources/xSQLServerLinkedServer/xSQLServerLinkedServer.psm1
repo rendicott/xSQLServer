@@ -37,6 +37,7 @@ Function Get-TargetResource
         [System.String]
         $LinkedServerCatalog,
 
+		[parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
         [System.String]
         $Ensure
@@ -81,6 +82,7 @@ Function Set-TargetResource
         [System.String]
         $LinkedServerCatalog,
 
+		[parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
         [System.String]
         $Ensure
@@ -169,6 +171,7 @@ Function Test-TargetResource
         [System.String]
         $LinkedServerCatalog,
 
+		[parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
         [System.String]
         $Ensure
