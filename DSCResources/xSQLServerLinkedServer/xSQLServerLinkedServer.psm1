@@ -87,17 +87,15 @@ Function Set-TargetResource
         [System.String]
         $Ensure
     )
-   
-   # get our full local server name incl instance
 
-   if($InstanceName)
-   {
-        $LocalServerFullname = $ServerName + "\" + $InstanceName
-   }
-   else
-   {
-        $LocalServerFullname = $ServerName
-   }   # get our full remote name 
+   # this is only necessary in this function so we can use the linked server thingy
+   $null = [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo')
+
+   $SQL =  Connect-SQL -SQLServer $ServerName -SQLInstanceName $InstanceName
+   
+   
+
+   # get our full remote name 
 
    if($RemoteInstance)
    {
@@ -106,18 +104,8 @@ Function Set-TargetResource
    else
    {
         $RemoteServerFullname = $RemoteServer
-   }	
-	
-	
+   }
 
-	Add-Content -Path c:\output\out.txt -Value "Enter set"
-   # this is only necessary in this function so we can use the linked server thingy
-   $null = [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo')
-
-   $SQL =  Connect-SQL -SQLServer $ServerName -SQLInstanceName $InstanceName
-   
-   Add-Content -Path c:\output\out.txt -Value "RemoteServerFullname = $RemoteServerFullname"
-   
    if( $SQL.linkedServers.Contains("$LinkedServerName") )
    {
         if($ensure)
@@ -139,7 +127,7 @@ Function Set-TargetResource
 			$newLinkedServer.Parent = $SQL
             $newLinkedServer.Name = $RemoteServerFullname
 			$newLinkedServer.Catalog = $LinkedServerCatalog
-            $newLinkedServer.Create
+            $newLinkedServer.Create()
         }
         else
         {
