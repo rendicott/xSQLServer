@@ -87,15 +87,17 @@ Function Set-TargetResource
         [System.String]
         $Ensure
     )
-
-   # this is only necessary in this function so we can use the linked server thingy
-   $null = [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo')
-
-   $SQL =  Connect-SQL -SQLServer $ServerName -SQLInstanceName $InstanceName
    
-   
+   # get our full local server name incl instance
 
-   # get our full remote name 
+   if($InstanceName)
+   {
+        $LocalServerFullname = $ServerName + "\" + $InstanceName
+   }
+   else
+   {
+        $LocalServerFullname = $ServerName
+   }   # get our full remote name 
 
    if($RemoteInstance)
    {
@@ -104,8 +106,22 @@ Function Set-TargetResource
    else
    {
         $RemoteServerFullname = $RemoteServer
-   }
+   }	
+	
+	
 
+	Add-Content -Path c:\output\out.txt -Value "Enter set"
+   # this is only necessary in this function so we can use the linked server thingy
+   $null = [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo')
+
+   $SQL =  Connect-SQL -SQLServer $ServerName -SQLInstanceName $InstanceName
+   
+   
+
+
+
+   Add-Content -Path c:\output\out.txt -Value "RemoteServerFullname = $RemoteServerFullname"
+   
    if( $SQL.linkedServers.Contains("$LinkedServerName") )
    {
         if($ensure)
@@ -123,10 +139,12 @@ Function Set-TargetResource
    {
         if($ensure)
         {
-            $newLinkedServer = New-Object Microsoft.SqlServer.Management.Smo.LinkedServer
-            $newLinkedServer.Parent = $SQL
-            $newLinkedServer.Name = $RemoteServerFullname
+			$newLinkedServer = New-Object Microsoft.SqlServer.Management.Smo.LinkedServer
+			$newLinkedServer.Parent = $SQL
+            $newLinkedServer.Name = $LinkedServerCatalog
+			$newLinkedServer.Catalog = $LinkedServerCatalog
             $newLinkedServer.DataSource = $RemoteServerFullname
+			$newLinkedServer.Server = $RemoteServerFullname
             $newLinkedServer.Create()
         }
         else
