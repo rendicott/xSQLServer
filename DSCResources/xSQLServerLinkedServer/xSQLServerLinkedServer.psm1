@@ -116,10 +116,6 @@ Function Set-TargetResource
 
    $SQL =  Connect-SQL -SQLServer $ServerName -SQLInstanceName $InstanceName
    
-   
-
-
-
    Add-Content -Path c:\output\out.txt -Value "RemoteServerFullname = $RemoteServerFullname"
    
    if( $SQL.linkedServers.Contains("$LinkedServerName") )
@@ -141,11 +137,9 @@ Function Set-TargetResource
         {
 			$newLinkedServer = New-Object Microsoft.SqlServer.Management.Smo.LinkedServer
 			$newLinkedServer.Parent = $SQL
-            $newLinkedServer.Name = $LinkedServerCatalog
+            $newLinkedServer.Name = $RemoteServerFullname
 			$newLinkedServer.Catalog = $LinkedServerCatalog
-            $newLinkedServer.DataSource = $RemoteServerFullname
-			$newLinkedServer.Server = $RemoteServerFullname
-            $newLinkedServer.Create()
+            $newLinkedServer.Create
         }
         else
         {
