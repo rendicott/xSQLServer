@@ -16,19 +16,11 @@ Function Get-TargetResource
         [parameter(Mandatory = $true)]
         [System.String]
         $ServerName,
-        
-        [parameter(Mandatory = $false)]
-        [System.String]
-        $InstanceName,       
-       
+              
         [parameter(Mandatory = $true)]
         [System.String]
         $RemoteServer,
         
-        [parameter(Mandatory = $false)]
-        [System.String]
-        $RemoteInstance,
-
         [parameter(Mandatory = $true)]
         [System.String]
         $LinkedServerName,
@@ -43,8 +35,10 @@ Function Get-TargetResource
         $Ensure
     )
 
+	
+	$serverCollection = $ServerName.split('\')
    # checking for connectivity is built in to this  
-   $SQL =  Connect-SQL -SQLServer $ServerName -SQLInstanceName $InstanceName
+   $SQL =  Connect-SQL -SQLServer $serverCollection[0] -SQLInstanceName $serverCollection[1]
    
    $linkedServers = $SQL.LinkedServers
 
@@ -61,19 +55,11 @@ Function Set-TargetResource
         [parameter(Mandatory = $true)]
         [System.String]
         $ServerName,
-        
-        [parameter(Mandatory = $false)]
-        [System.String]
-        $InstanceName,       
        
         [parameter(Mandatory = $true)]
         [System.String]
         $RemoteServer,
         
-        [parameter(Mandatory = $false)]
-        [System.String]
-        $RemoteInstance,
-
         [parameter(Mandatory = $true)]
         [System.String]
         $LinkedServerName,
@@ -91,21 +77,10 @@ Function Set-TargetResource
    # this is only necessary in this function so we can use the linked server thingy
    $null = [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.Smo')
 
-   $SQL =  Connect-SQL -SQLServer $ServerName -SQLInstanceName $InstanceName
+   $serverCollection = $ServerName.split('\')
    
+   $SQL =  Connect-SQL -SQLServer $serverCollection[0] -SQLInstanceName $serverCollection[1]
    
-
-   # get our full remote name 
-
-   if($RemoteInstance)
-   {
-        $RemoteServerFullname = $RemoteServer + "\" + $RemoteInstance
-   }
-   else
-   {
-        $RemoteServerFullname = $RemoteServer
-   }
-
    if( $SQL.linkedServers.Contains("$LinkedServerName") )
    {
         if($ensure)
@@ -123,10 +98,10 @@ Function Set-TargetResource
    {
         if($ensure)
         {
-			$newLinkedServer = New-Object Microsoft.SqlServer.Management.Smo.LinkedServer
-			$newLinkedServer.Parent = $SQL
+            $newLinkedServer = New-Object Microsoft.SqlServer.Management.Smo.LinkedServer
+            $newLinkedServer.Parent = $SQL
             $newLinkedServer.Name = $RemoteServerFullname
-			$newLinkedServer.Catalog = $LinkedServerCatalog
+            $newLinkedServer.DataSource = $RemoteServerFullname
             $newLinkedServer.Create()
         }
         else
@@ -150,19 +125,11 @@ Function Test-TargetResource
         [parameter(Mandatory = $true)]
         [System.String]
         $ServerName,
-        
-        [parameter(Mandatory = $false)]
-        [System.String]
-        $InstanceName,       
        
         [parameter(Mandatory = $true)]
         [System.String]
         $RemoteServer,
         
-        [parameter(Mandatory = $false)]
-        [System.String]
-        $RemoteInstance,
-
         [parameter(Mandatory = $true)]
         [System.String]
         $LinkedServerName,
@@ -177,19 +144,11 @@ Function Test-TargetResource
         $Ensure
     )
 
+   $serverCollection = $ServerName.split('\')
    
-   $SQL =  Connect-SQL -SQLServer $ServerName -SQLInstanceName $InstanceName
+   $SQL =  Connect-SQL -SQLServer $serverCollection[0] -SQLInstanceName $serverCollection[1]
    
    $linkedServers = $SQL.LinkedServers
-
-   if($RemoteInstance)
-   {
-        $RemoteServerFullname = $RemoteServer + "\" + $RemoteInstance
-   }
-   else
-   {
-        $RemoteServerFullname = $RemoteServer
-   }
 
    if( $linkedServers.Contains("$LinkedServerName") )
    {
