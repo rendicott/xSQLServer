@@ -149,7 +149,7 @@ Function Test-TargetResource
    
    $linkedServers = $SQL.LinkedServers
 
-   if( $linkedServers.Contains("$LinkedServerName") )
+   if( $linkedServers.Contains("$RemoteServer") )
    {
         if($Ensure -eq 'present')
         {
