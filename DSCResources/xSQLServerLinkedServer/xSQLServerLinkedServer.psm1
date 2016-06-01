@@ -101,7 +101,6 @@ Function Set-TargetResource
             $newLinkedServer = New-Object Microsoft.SqlServer.Management.Smo.LinkedServer
             $newLinkedServer.Parent = $SQL
             $newLinkedServer.Name = $RemoteServerFullname
-            $newLinkedServer.DataSource = $RemoteServerFullname
             $newLinkedServer.Create()
         }
         else
